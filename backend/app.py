@@ -25,31 +25,46 @@ def home():
 @app.route('/api/predict', methods=['POST'])
 def predict():
     try:
-        # Get JSON data from request
         data = request.get_json()
-        
-        # Extract features in the correct order
+
+        if not isinstance(data, dict):
+            return jsonify({'error': 'Expected a JSON object'}), 400
+
         input_features = []
         for feature in feature_names:
             if feature not in data:
                 return jsonify({'error': f'Missing feature: {feature}'}), 400
             input_features.append(float(data[feature]))
-        
-        # Convert to numpy array and reshape
+
         input_array = np.array(input_features).reshape(1, -1)
-        
-        # Make prediction
+
         prediction = model.predict(input_array)[0]
         probability = model.predict_proba(input_array)[0]
-        
+        class_labels = list(model.classes_)
+
+        if len(class_labels) != 2:
+            return jsonify({'error': 'Model does not support binary classification'}), 400
+
+        negative_class = 0 if 0 in class_labels else class_labels[0]
+        positive_class = 1 if 1 in class_labels else class_labels[1]
+
+        negative_index = class_labels.index(negative_class)
+        positive_index = class_labels.index(positive_class)
+
+        probability_no_disease = float(probability[negative_index] * 100)
+        probability_disease = float(probability[positive_index] * 100)
+
+        predicted_class = int(prediction)
+        prediction_text = 'Heart Disease Detected' if predicted_class == positive_class else 'No Heart Disease'
+
         result = {
-            'prediction': int(prediction),
-            'prediction_text': 'Heart Disease Detected' if prediction == 1 else 'No Heart Disease',
+            'prediction': predicted_class,
+            'prediction_text': prediction_text,
             'confidence': float(max(probability) * 100),
-            'probability_no_disease': float(probability[0] * 100),
-            'probability_disease': float(probability[1] * 100)
+            'probability_no_disease': probability_no_disease,
+            'probability_disease': probability_disease
         }
-        
+
         return jsonify(result)
     
     except Exception as e:

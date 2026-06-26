@@ -34,6 +34,18 @@ const probDisease = document.getElementById('probDisease');
 const resultBox = document.getElementById('resultBox');
 const resultIcon = resultBox.querySelector('.result-icon');
 const resultSvg = document.getElementById('resultSvg');
+const inputSummary = document.getElementById('inputSummary');
+
+const readableLabels = {
+    sex: {0: 'Female', 1: 'Male'},
+    cp: {0: 'Typical Angina', 1: 'Atypical Angina', 2: 'Non-anginal Pain', 3: 'Asymptomatic'},
+    fbs: {0: '≤ 120 mg/dl', 1: '> 120 mg/dl'},
+    restecg: {0: 'Normal', 1: 'Abnormal', 2: 'Severe'},
+    exang: {0: 'No', 1: 'Yes'},
+    slope: {0: 'Upsloping', 1: 'Flat', 2: 'Downsloping'},
+    ca: {0: '0 vessels', 1: '1 vessel', 2: '2 vessels', 3: '3 vessels'},
+    thal: {1: 'Normal', 2: 'Fixed Defect', 3: 'Reversible Defect'}
+};
 
 // Form submission
 form.addEventListener('submit', async (e) => {
@@ -66,6 +78,8 @@ async function makePrediction() {
         thal: parseInt(inputs.thal.value)
     };
 
+    updateInputSummary(data);
+
     // Show loading
     showLoading();
 
@@ -89,6 +103,25 @@ async function makePrediction() {
         showError(`Error: ${error.message}`);
         console.error('Prediction error:', error);
     }
+}
+
+function getReadableValue(field, value) {
+    if (readableLabels[field] && readableLabels[field][value] !== undefined) {
+        return readableLabels[field][value];
+    }
+    return value;
+}
+
+function updateInputSummary(data) {
+    const summaryParts = [
+        `Age: ${data.age}`,
+        `Sex: ${getReadableValue('sex', data.sex)}`,
+        `Chest pain: ${getReadableValue('cp', data.cp)}`,
+        `BP: ${data.trestbps} mmHg`,
+        `Cholesterol: ${data.chol} mg/dl`
+    ];
+
+    inputSummary.textContent = summaryParts.join(' • ');
 }
 
 // Display result

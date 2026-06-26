@@ -327,6 +327,17 @@ body {
     margin-top: 15px;
 }
 
+.input-summary {
+    background: #f8fbff;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 15px;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
 /* Loading Spinner */
 .loading-hidden {
     display: none;
