@@ -12,7 +12,7 @@ CORS(app)
 model_path = os.path.join(os.path.dirname(__file__), '../models/heart_disease_model.pkl')
 features_path = os.path.join(os.path.dirname(__file__), '../models/features.pkl')
 
-from flask import flask, request, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pickle
 import numpy as np
