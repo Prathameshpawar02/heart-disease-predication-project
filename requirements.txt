@@ -1,5 +1,6 @@
-flask
-flask-cors
-gunicorn
-numpy==2.0.0
-scikit-learn==1.5.0
+Flask>=3.0,<4.0
+Flask-Cors>=4.0,<7.0
+gunicorn>=21.2,<23.0
+numpy>=1.26,<2.2
+pandas>=2.2,<3.0
+scikit-learn>=1.5,<1.6
