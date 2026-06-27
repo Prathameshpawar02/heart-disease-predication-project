@@ -1,5 +1,5 @@
 // API Configuration
-const API_URL = 'http://localhost:5000';
+const API_URL = 'https://heart-disease-predication-project.onrender.com/predict';   
 
 // DOM Elements
 const form = document.getElementById('predictionForm');
