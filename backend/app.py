@@ -12,6 +12,9 @@ CORS(app)
 model_path = os.path.join(os.path.dirname(__file__), '../models/heart_disease_model.pkl')
 features_path = os.path.join(os.path.dirname(__file__), '../models/features.pkl')
 
+import sys
+import numpy
+sys.modules['numpy._core'] =numpy
 with open(model_path, 'rb') as f:
     model = pickle.load(f)
 
