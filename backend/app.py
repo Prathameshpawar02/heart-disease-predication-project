@@ -12,9 +12,13 @@ CORS(app)
 model_path = os.path.join(os.path.dirname(__file__), '../models/heart_disease_model.pkl')
 features_path = os.path.join(os.path.dirname(__file__), '../models/features.pkl')
 
-import sys
-import numpy
-sys.modules['numpy._core'] =numpy
+from flask import flask, request, jsonify
+from flask_cors import CORS
+import pickle
+import numpy as np
+import os
+import json
+
 with open(model_path, 'rb') as f:
     model = pickle.load(f)
 
